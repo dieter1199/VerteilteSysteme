@@ -1,3 +1,4 @@
+#Java 17 beim start von GitPod
 FROM gitpod/workspace-full
 
 USER gitpod
