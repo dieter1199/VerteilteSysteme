@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Todo App</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+    <header>
+        Meine Todo-Liste
+    </header>
+    <form id="todoForm">
+        <input type="text" id="todoText" placeholder="Enter a todo">
+        <button type="submit">Add</button>
+    </form>
+    <div class="todo-container">
+        <ul id="todoList">
+        </ul>
+    </div>
+    <script>
+            const API_URL = 'https://8080-dieter1199-verteiltesys-is3nijbvdhj.ws-eu100.gitpod.io/api/todos';
+
+function refreshTodos() {
+    $.getJSON(API_URL, function(todos) {
+        $('#todoList').empty();
+        todos.forEach(function(todo) {
+        $('#todoList').append(`
+            <li>
+                <span class="todo-text">${todo.todo}</span>
+                <div>
+                    <button class="delete" onclick="deleteTodo('${todo.id}')">Delete</button>
+                    <button class="update" onclick="updateTodo('${todo.id}')">Update</button>
+                </div>
+            </li>
+        `);
+        });
+    });
+}
+
+function deleteTodo(id) {
+    $.ajax({
+        url: API_URL + '/' + id,
+        type: 'DELETE',
+        success: function() {
+            refreshTodos();
+        }
+    });
+}
+
+function updateTodo(id) {
+    const newText = prompt('New text for todo');
+    $.ajax({
+        url: API_URL + '/' + id,
+        type: 'PUT',
+        data: JSON.stringify({todo: newText}),
+        contentType: "application/json; charset=utf-8",
+        success: function() {
+            refreshTodos();
+        }
+    });
+}
+
+$('#todoForm').on('submit', function(e) {
+    e.preventDefault();
+    const todoText = $('#todoText').val();
+    $.ajax({
+        url: API_URL,
+        type: 'POST',
+        data: JSON.stringify({todo: todoText}), 
+        contentType: "application/json; charset=utf-8",
+        success: function() {
+            refreshTodos();
+            $('#todoText').val('');
+        }
+    });
+});
+
+refreshTodos();
+
+    </script>
+    
+</body>
+</html>

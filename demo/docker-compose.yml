@@ -1,0 +1,10 @@
+version: '3'
+services:
+  backend:
+    build: ./Pfad-zum-Backend-Verzeichnis
+    ports:
+      - "8080:8080"
+  frontend:
+    build: ./Pfad-zum-Frontend-Verzeichnis
+    ports:
+      - "80:80"
