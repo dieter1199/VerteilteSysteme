@@ -25,72 +25,72 @@
         </ul>
     </div>
     <script>
-
-    // Ladebildschirm einblenden bis Ajax-Anfrage abgeschlossen ist
-    $(document).ajaxStart(function() {
+    $(document).ready(function() {
+        // Loading screen anzeigen
         $('#loading-screen').show();
-    }).ajaxStop(function() {
-        $('#loading-screen').hide();
+
+        setTimeout(function(){
+            $('#loading-screen').hide();
+        }, 10000);
     });
 
     function refreshTodos() {
         $.getJSON(window.API_URL, function(todos) {
             $('#todoList').empty();
             todos.forEach(function(todo) {
-            $('#todoList').append(`
-                <li>
-                    <span class="todo-text">${todo.todo}</span>
-                    <div>
-                        <button class="delete" onclick="deleteTodo('${todo.id}')">Delete</button>
-                        <button class="update" onclick="updateTodo('${todo.id}')">Update</button>
-                    </div>
-                </li>
-            `);
+                $('#todoList').append(`
+                    <li>
+                        <span class="todo-text">${todo.todo}</span>
+                        <div>
+                            <button class="delete" onclick="deleteTodo('${todo.id}')">Delete</button>
+                            <button class="update" onclick="updateTodo('${todo.id}')">Update</button>
+                        </div>
+                    </li>
+                `);
             });
         });
     }
 
-function deleteTodo(id) {
-    $.ajax({
-        url: window.API_URL + '/' + id,
-        type: 'DELETE',
-        success: function() {
-            refreshTodos();
-        }
-    });
-}
+    function deleteTodo(id) {
+        $.ajax({
+            url: window.API_URL + '/' + id,
+            type: 'DELETE',
+            success: function() {
+                refreshTodos();
+            }
+        });
+    }
 
-function updateTodo(id) {
-    const newText = prompt('New text for todo');
-    $.ajax({
-        url: window.API_URL + '/' + id,
-        type: 'PUT',
-        data: JSON.stringify({todo: newText}),
-        contentType: "application/json; charset=utf-8",
-        success: function() {
-            refreshTodos();
-        }   
-    });
-}
+    function updateTodo(id) {
+        const newText = prompt('New text for todo');
+        $.ajax({
+            url: window.API_URL + '/' + id,
+            type: 'PUT',
+            data: JSON.stringify({todo: newText}),
+            contentType: "application/json; charset=utf-8",
+            success: function() {
+                refreshTodos();
+            }   
+        });
+    }
 
-$('#todoForm').on('submit', function(e) {
-    e.preventDefault();
-    const todoText = $('#todoText').val();
-    $.ajax({
-        url: window.API_URL,
-        type: 'POST',
-        data: JSON.stringify({todo: todoText}), 
-        contentType: "application/json; charset=utf-8",
-        success: function() {
-            refreshTodos();
-            $('#todoText').val('');
-        }
+    $('#todoForm').on('submit', function(e) {
+        e.preventDefault();
+        const todoText = $('#todoText').val();
+        $.ajax({
+            url: window.API_URL,
+            type: 'POST',
+            data: JSON.stringify({todo: todoText}), 
+            contentType: "application/json; charset=utf-8",
+            success: function() {
+                refreshTodos();
+                $('#todoText').val('');
+            }
+        });
     });
-});
 
-refreshTodos();
+    refreshTodos();
 
     </script>
-    
 </body>
 </html>
