@@ -4,6 +4,10 @@
     <title>Todo App</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        var hostname = window.location.hostname;
+        window.API_URL = 'http://' + hostname + ':8080/api/todos';
+    </script>
 </head>
 <body>
     <header>
@@ -18,10 +22,9 @@
         </ul>
     </div>
     <script>
-            const API_URL = '/api/todos';
             
 function refreshTodos() {
-    $.getJSON(API_URL, function(todos) {
+    $.getJSON(window.API_URL, function(todos) {
         $('#todoList').empty();
         todos.forEach(function(todo) {
         $('#todoList').append(`
@@ -39,7 +42,7 @@ function refreshTodos() {
 
 function deleteTodo(id) {
     $.ajax({
-        url: API_URL + '/' + id,
+        url: window.API_URL + '/' + id,
         type: 'DELETE',
         success: function() {
             refreshTodos();
@@ -50,13 +53,13 @@ function deleteTodo(id) {
 function updateTodo(id) {
     const newText = prompt('New text for todo');
     $.ajax({
-        url: API_URL + '/' + id,
+        url: window.API_URL + '/' + id,
         type: 'PUT',
         data: JSON.stringify({todo: newText}),
         contentType: "application/json; charset=utf-8",
         success: function() {
             refreshTodos();
-        }
+        }   
     });
 }
 
@@ -64,7 +67,7 @@ $('#todoForm').on('submit', function(e) {
     e.preventDefault();
     const todoText = $('#todoText').val();
     $.ajax({
-        url: API_URL,
+        url: window.API_URL,
         type: 'POST',
         data: JSON.stringify({todo: todoText}), 
         contentType: "application/json; charset=utf-8",

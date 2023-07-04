@@ -29,3 +29,5 @@ services:
       - 80:80
     volumes:
       - ./src/main/resources/static:/usr/share/nginx/html
+    environment:
+      - API_URL=https://todobackend:8080/api/todos
