@@ -10,18 +10,32 @@
     </script>
 </head>
 <body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">Loading...</div>
+
     <header>
         Meine Todo-Liste
     </header>
     <form id="todoForm">
         <input type="text" id="todoText" placeholder="Enter a todo">
-        <button type="submit">Add</button>
+        <button type="submit">Addddd</button>
     </form>
     <div class="todo-container">
         <ul id="todoList">
         </ul>
     </div>
     <script>
+        
+    // Ladebildschirm für 5 Sekunden anzeigen
+    $(document).ready(function() {
+        console.log("LOAD");
+        $('#loading-screen').show();
+
+        setTimeout(function(){
+            $('#loading-screen').hide();
+        }, 5000);
+        console.log("Done");
+    });
             
 function refreshTodos() {
     $.getJSON(window.API_URL, function(todos) {
@@ -37,6 +51,8 @@ function refreshTodos() {
             </li>
         `);
         });
+        // Ausblenden des Ladeschirms, wenn die Daten geladen sind
+        $('#loading-screen').fadeOut('slow');
     });
 }
 
