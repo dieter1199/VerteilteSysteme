@@ -22,12 +22,8 @@ services:
       POSTGRES_DB: postgres
 
   frontend:
-    build:
-      context: ./src/main/resources/static
-      dockerfile: Dockerfile
+    image: dieter1199/verteilte-systeme-nginx
     ports:
       - 80:80
-    volumes:
-      - ./src/main/resources/static:/usr/share/nginx/html
     environment:
       - API_URL=https://todobackend:8080/api/todos

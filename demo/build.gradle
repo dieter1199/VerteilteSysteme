@@ -22,7 +22,7 @@ dependencies {
 
 jib {
     from {
-        image = 'openjdk:11-jre-slim'
+        image = 'adoptopenjdk:17-jdk-hotspot'
     }
     to {
         image = 'dieter1199/verteilte-systeme'
